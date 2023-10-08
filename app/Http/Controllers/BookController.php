@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Book;
 use Illuminate\Http\Request;
+use PharException;
 
 class BookController extends Controller
 {
@@ -29,7 +30,19 @@ class BookController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        try {
+
+            $name = $request->input('name');
+
+            $newbook = new Book();
+
+            $newbook->name = $name;
+
+            $newbook->save();
+            return response()->json(['success' => 'Data insert successfully', 'data' => $newbook]);
+        } catch (PharException $e) {
+            abort('An error occurred.');
+        }
     }
 
     /**
